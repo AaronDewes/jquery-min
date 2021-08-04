@@ -1137,40 +1137,21 @@ QUnit.test( "pseudo - :not", function( assert ) {
 	assert.t( ":not() failing interior", "#qunit-fixture p:not(.foo)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
 	assert.t( ":not() failing interior", "#qunit-fixture p:not(#blargh)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
 
-	if ( QUnit.jQuerySelectors || !QUnit.isIE ) {
-		assert.t( ":not() failing interior", "#qunit-fixture p:not(div.foo)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
-		assert.t( ":not() failing interior", "#qunit-fixture p:not(p.foo)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
-		assert.t( ":not() failing interior", "#qunit-fixture p:not(div#blargh)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
-		assert.t( ":not() failing interior", "#qunit-fixture p:not(p#blargh)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
-	} else {
-		// Support: IE 11+
-		// IE doesn't support `:not(complex selector)`.
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-	}
+	assert.t( ":not() failing interior", "#qunit-fixture p:not(div.foo)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
+	assert.t( ":not() failing interior", "#qunit-fixture p:not(p.foo)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
+	assert.t( ":not() failing interior", "#qunit-fixture p:not(div#blargh)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
+	assert.t( ":not() failing interior", "#qunit-fixture p:not(p#blargh)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
 
 	assert.t( ":not Multiple", "#qunit-fixture p:not(a)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
 	assert.t( ":not Multiple", "#qunit-fixture p:not( a )", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
 	assert.t( ":not Multiple", "#qunit-fixture p:not( p )", [] );
 	assert.t( ":not Multiple", "p:not(p)", [] );
 
-	if ( QUnit.jQuerySelectors || !QUnit.isIE ) {
-		assert.t( ":not Multiple", "#qunit-fixture p:not(a, b)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
-		assert.t( ":not Multiple", "#qunit-fixture p:not(a, b, div)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
-		assert.t( ":not Multiple", "p:not(a,p)", [] );
-		assert.t( ":not Multiple", "p:not(p,a)", [] );
-		assert.t( ":not Multiple", "p:not(a,p,b)", [] );
-	} else {
-		// Support: IE 11+
-		// IE doesn't support `:not(complex selector)`.
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-	}
+	assert.t( ":not Multiple", "#qunit-fixture p:not(a, b)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
+	assert.t( ":not Multiple", "#qunit-fixture p:not(a, b, div)", [ "firstp", "ap", "sndp", "en", "sap", "first" ] );
+	assert.t( ":not Multiple", "p:not(a,p)", [] );
+	assert.t( ":not Multiple", "p:not(p,a)", [] );
+	assert.t( ":not Multiple", "p:not(a,p,b)", [] );
 
 	if ( QUnit.jQuerySelectors ) {
 		assert.t( ":not Multiple", ":input:not(:image,:input,:submit)", [] );
@@ -1189,13 +1170,7 @@ QUnit.test( "pseudo - :not", function( assert ) {
 	assert.t( ":not() Multiple Class", "#foo a:not(.blog)", [ "yahoo", "anchor2" ] );
 	assert.t( ":not() Multiple Class", "#foo a:not(.link)", [ "yahoo", "anchor2" ] );
 
-	if ( QUnit.jQuerySelectors || !QUnit.isIE ) {
-		assert.t( ":not() Multiple Class", "#foo a:not(.blog.link)", [ "yahoo", "anchor2" ] );
-	} else {
-		// Support: IE 11+
-		// IE doesn't support `:not(complex selector)`.
-		assert.ok( "skip", ":not(complex selector) not supported in selector-native" );
-	}
+	assert.t( ":not() Multiple Class", "#foo a:not(.blog.link)", [ "yahoo", "anchor2" ] );
 
 	if ( QUnit.jQuerySelectors ) {
 		assert.t( ":not chaining (compound)", "#qunit-fixture div[id]:not(:has(div, span)):not(:has(*))", [ "nothiddendivchild", "divWithNoTabIndex", "fx-tests" ] );
@@ -1741,7 +1716,7 @@ QUnit[ QUnit.jQuerySelectors ? "test" : "skip" ]( "disconnected nodes", function
 // Support: IE 11+
 // IE doesn't support Shadow DOM.
 // selector-native doesn't support querying inside of Shadow DOM.
-QUnit[ QUnit.jQuerySelectors && !QUnit.isIE ? "test" : "skip" ](
+QUnit[ QUnit.jQuerySelectors ? "test" : "skip" ](
 	"Shadow DOM nodes supported as root", function( assert ) {
 	assert.expect( 2 );
 

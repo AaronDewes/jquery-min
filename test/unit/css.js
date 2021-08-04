@@ -1022,7 +1022,7 @@ QUnit[ QUnit.jQuerySelectors && jQuery.fn.toggle ? "test" : "skip" ]( "detached 
 		"cascade-hidden element in detached tree" );
 } );
 
-QUnit[ QUnit.jQuerySelectors && jQuery.fn.toggle && !QUnit.isIE ? "test" : "skip" ](
+QUnit[ QUnit.jQuerySelectors && jQuery.fn.toggle ? "test" : "skip" ](
 	"shadow toggle()", function( assert ) {
 
 	assert.expect( 4 );
@@ -1805,21 +1805,4 @@ QUnit.testUnlessIE( "Don't append px to CSS vars", function( assert ) {
 	assert.equal( $div.css( "--line-height" ), "4", "--line-height: 4" );
 	assert.equal( $div.css( "--lineHeight" ), "5", "--lineHeight: 5" );
 } );
-
-// Support: IE 11+
-// This test requires Grid to be *not supported* to work.
-if ( QUnit.isIE ) {
-	// Make sure explicitly provided IE vendor prefix (`-ms-`) is not converted
-	// to a non-working `Ms` prefix in JavaScript.
-	QUnit.test( "IE vendor prefixes are not mangled", function( assert ) {
-		assert.expect( 1 );
-
-		var div = jQuery( "<div>" ).appendTo( "#qunit-fixture" );
-
-		div.css( "-ms-grid-row", "1" );
-
-		assert.strictEqual( div.css( "-ms-grid-row" ), "1", "IE vendor prefixing" );
-	} );
-}
-
 }

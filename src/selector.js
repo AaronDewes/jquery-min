@@ -7,7 +7,6 @@ import pop from "./var/pop.js";
 import push from "./var/push.js";
 import whitespace from "./selector/var/whitespace.js";
 import rbuggyQSA from "./selector/rbuggyQSA.js";
-import isIE from "./var/isIE.js";
 
 // The following utils are attached directly to the jQuery object.
 import "./selector/contains.js";
@@ -130,14 +129,6 @@ var i,
 			String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );
 	},
 
-	// Used for iframes; see `setDocument`.
-	// Support: IE 9 - 11+
-	// Removing the function wrapper causes a "Permission Denied"
-	// error in IE.
-	unloadHandler = function() {
-		setDocument();
-	},
-
 	inDisabledFieldset = addCombinator(
 		function( elem ) {
 			return elem.disabled === true && nodeName( elem, "fieldset" );
@@ -229,9 +220,8 @@ function find( selector, context, results, seed ) {
 					newContext = rsibling.test( selector ) && testContext( context.parentNode ) ||
 						context;
 
-					// Outside of IE, if we're not changing the context we can
-					// use :scope instead of an ID.
-					if ( newContext !== context || isIE ) {
+					// If we're not changing the context we can use :scope instead of an ID.
+					if ( newContext !== context ) {
 
 						// Capture the context ID, setting it first if necessary
 						if ( ( nid = context.getAttribute( "id" ) ) ) {
@@ -414,8 +404,7 @@ function testContext( context ) {
  * @param {Element|Object} [node] An element or document object to use to set the document
  */
 function setDocument( node ) {
-	var subWindow,
-		doc = node ? node.ownerDocument || node : preferredDoc;
+	var doc = node ? node.ownerDocument || node : preferredDoc;
 
 	// Return early if doc is invalid or already selected
 	// Support: IE 11+
@@ -430,17 +419,6 @@ function setDocument( node ) {
 	document = doc;
 	documentElement = document.documentElement;
 	documentIsHTML = !jQuery.isXMLDoc( document );
-
-	// Support: IE 9 - 11+
-	// Accessing iframe documents after unload throws "permission denied" errors (jQuery #13936)
-	// Support: IE 11+
-	// IE sometimes throws a "Permission denied" error when strict-comparing
-	// two documents; shallow comparisons work.
-	// eslint-disable-next-line eqeqeq
-	if ( isIE && preferredDoc != document &&
-		( subWindow = document.defaultView ) && subWindow.top !== subWindow ) {
-		subWindow.addEventListener( "unload", unloadHandler );
-	}
 }
 
 find.matches = function( expr, elements ) {
@@ -920,16 +898,6 @@ Expr = jQuery.expr = {
 		},
 
 		selected: function( elem ) {
-
-			// Support: IE <=11+
-			// Accessing the selectedIndex property
-			// forces the browser to treat the default option as
-			// selected when in an optgroup.
-			if ( isIE && elem.parentNode ) {
-				// eslint-disable-next-line no-unused-expressions
-				elem.parentNode.selectedIndex;
-			}
-
 			return elem.selected === true;
 		},
 

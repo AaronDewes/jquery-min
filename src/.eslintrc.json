@@ -53,14 +53,8 @@
 			},
 			"globals": {
 				"jQuery": false,
-				"module": true
-			}
-		},
-
-		{
-			"files": "exports/amd.js",
-			"globals": {
-				"define": false
+				"module": true,
+				"window": true
 			}
 		},
 

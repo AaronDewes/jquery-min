@@ -12,7 +12,7 @@ module.exports = function( grunt ) {
 		return data;
 	}
 
-	var fs = require( "fs" ),
+	const fs = require( "fs" ),
 		gzip = require( "gzip-js" ),
 		isTravis = process.env.TRAVIS,
 		travisBrowsers = process.env.BROWSERS && process.env.BROWSERS.split( "," ),
@@ -39,8 +39,7 @@ module.exports = function( grunt ) {
 		babel: {
 			options: {
 				sourceMap: "inline",
-				retainLines: true,
-				plugins: [ "@babel/transform-for-of" ]
+				retainLines: true
 			},
 			tests: {
 				files: {
@@ -59,15 +58,14 @@ module.exports = function( grunt ) {
 
 				// Exclude specified modules if the module matching the key is removed
 				removeWith: {
-					ajax: [ "manipulation/_evalUrl", "deprecated/ajax-event-alias" ],
+					ajax: [ "manipulation/_evalUrl" ],
 					callbacks: [ "deferred" ],
 					css: [ "effects", "dimensions", "offset" ],
 					"css/showHide": [ "effects" ],
 					deferred: {
 						remove: [ "ajax", "effects", "queue", "core/ready" ],
 						include: [ "core/ready-no-deferred" ]
-					},
-					event: [ "deprecated/ajax-event-alias", "deprecated/event" ]
+					}
 				}
 			}
 		},
@@ -139,7 +137,6 @@ module.exports = function( grunt ) {
 				"css",
 				"data",
 				"deferred",
-				"deprecated",
 				"dimensions",
 				"effects",
 				"event",
@@ -204,12 +201,6 @@ module.exports = function( grunt ) {
 						served: true,
 						nocache: true
 					},
-					{
-						pattern: "amd/**",
-						included: false,
-						served: true,
-						nocache: true
-					},
 					{ pattern: "external/**", included: false, served: true },
 					{
 						pattern: "test/**/*.@(js|css|jpg|html|xml|svg)",
@@ -238,21 +229,6 @@ module.exports = function( grunt ) {
 							autostart: false,
 
 							esmodules: true
-						}
-					}
-				}
-			},
-			amd: {
-				browsers: isTravis && travisBrowsers || [ "ChromeHeadless" ],
-				options: {
-					client: {
-						qunit: {
-
-							// We're running `QUnit.start()` ourselves via `loadTests()`
-							// in test/jquery.js
-							autostart: false,
-
-							amd: true
 						}
 					}
 				}
@@ -297,10 +273,6 @@ module.exports = function( grunt ) {
 			"firefox-debug": {
 				browsers: [ "Firefox" ],
 				singleRun: false
-			},
-			"ie-debug": {
-				browsers: [ "IE" ],
-				singleRun: false
 			}
 		},
 		watch: {
@@ -322,8 +294,9 @@ module.exports = function( grunt ) {
 					output: {
 						"ascii_only": true
 					},
-					banner: "/*! jQuery v<%= pkg.version %> | " +
-						"(c) OpenJS Foundation and other contributors | jquery.org/license */",
+					banner: "/*! cleanquery.js v<%= pkg.version %> | based on jQuery 4 |" +
+						" jQuery is (c) OpenJS Foundation and other contributors |" +
+						" jquery.org/license */",
 					compress: {
 						"hoist_funs": false,
 						loops: false
@@ -346,16 +319,14 @@ module.exports = function( grunt ) {
 		// would run the dist target first which would point to errors in the built
 		// file, making it harder to fix them. We want to check the built file only
 		// if we already know the source files pass the linter.
-		"eslint:dev",
-		"eslint:dist"
+		"eslint:dev"
 	] );
 
 	grunt.registerTask( "lint:newer", [
 		"newer:jsonlint",
 
 		// Don't replace it with just the task; see the above comment.
-		"newer:eslint:dev",
-		"newer:eslint:dist"
+		"newer:eslint:dev"
 	] );
 
 	grunt.registerTask( "test:fast", "node_smoke_tests" );
@@ -389,12 +360,10 @@ module.exports = function( grunt ) {
 	grunt.registerTask( "default", [
 		"eslint:dev",
 		"build:*:*",
-		"amd",
 		"uglify",
 		"remove_map_comment",
 		"dist:*",
 		"test:prepare",
-		"eslint:dist",
 		"test:fast",
 		"compare_size"
 	] );

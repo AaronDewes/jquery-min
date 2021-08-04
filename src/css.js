@@ -2,7 +2,6 @@ import jQuery from "./core.js";
 import access from "./core/access.js";
 import nodeName from "./core/nodeName.js";
 import rcssNum from "./var/rcssNum.js";
-import isIE from "./var/isIE.js";
 import rnumnonpx from "./css/var/rnumnonpx.js";
 import cssExpand from "./css/var/cssExpand.js";
 import isAutoPx from "./css/isAutoPx.js";
@@ -118,7 +117,7 @@ function getWidthOrHeight( elem, dimension, extra ) {
 
 		// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-4322).
 		// Fake content-box until we know it's needed to know the true value.
-		boxSizingNeeded = isIE || extra,
+		boxSizingNeeded = extra,
 		isBorderBox = boxSizingNeeded &&
 			jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
 		valueIsBorderBox = isBorderBox,
@@ -140,11 +139,6 @@ function getWidthOrHeight( elem, dimension, extra ) {
 		// Fall back to offsetWidth/offsetHeight when value is "auto"
 		// This happens for inline elements with no explicit setting (gh-3571)
 		val === "auto" ||
-
-		// Support: IE 9 - 11+
-		// Use offsetWidth/offsetHeight for when box sizing is unreliable.
-		// In those cases, the computed value can be trusted to be border-box.
-		( isIE && isBorderBox ) ||
 
 		// Support: IE 10 - 11+
 		// IE misreports `getComputedStyle` of table rows with width/height
@@ -236,12 +230,6 @@ jQuery.extend( {
 			// If the value is a number, add `px` for certain CSS properties
 			if ( type === "number" ) {
 				value += ret && ret[ 3 ] || ( isAutoPx( origName ) ? "px" : "" );
-			}
-
-			// Support: IE <=9 - 11+
-			// background-* props of a cloned element affect the source element (#8908)
-			if ( isIE && value === "" && name.indexOf( "background" ) === 0 ) {
-				style[ name ] = "inherit";
 			}
 
 			// If a hook was provided, use that value, otherwise just set the specified value

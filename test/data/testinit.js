@@ -306,18 +306,17 @@ QUnit.jQuerySelectors = true;
 // Support: IE 11+
 // A variable to make it easier to skip specific tests in IE, mostly
 // testing integrations with newer Web features not supported by it.
-QUnit.isIE = !!window.document.documentMode;
-QUnit.testUnlessIE = QUnit.isIE ? QUnit.skip : QUnit.test;
+QUnit.isIE = false;
+QUnit.testUnlessIE = QUnit.test;
 
 this.loadTests = function() {
 
 	// QUnit.config is populated from QUnit.urlParams but only at the beginning
 	// of the test run. We need to read both.
-	var esmodules = QUnit.config.esmodules || QUnit.urlParams.esmodules,
-		amd = QUnit.config.amd || QUnit.urlParams.amd;
+	var esmodules = QUnit.config.esmodules || QUnit.urlParams.esmodules;
 
 	// Directly load tests that need evaluation before DOMContentLoaded.
-	if ( ( !esmodules && !amd ) || document.readyState === "loading" ) {
+	if ( ( !esmodules ) || document.readyState === "loading" ) {
 		document.write( "<script src='" + parentUrl + "test/unit/ready.js'><\x2Fscript>" );
 	} else {
 		QUnit.module( "ready", function() {
@@ -337,7 +336,6 @@ this.loadTests = function() {
 				"unit/core.js",
 				"unit/callbacks.js",
 				"unit/deferred.js",
-				"unit/deprecated.js",
 				"unit/support.js",
 				"unit/data.js",
 				"unit/queue.js",

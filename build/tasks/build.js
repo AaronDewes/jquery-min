@@ -1,7 +1,6 @@
 /**
  * Special build task to handle various jQuery build requirements.
- * Compiles JS modules into one bundle, sets the custom AMD name,
- * and includes/excludes specified modules
+ * Compiles JS modules into one bundle and includes/excludes specified modules
  */
 
 "use strict";
@@ -218,22 +217,6 @@ module.exports = function( grunt ) {
 					"import jQuery from \"../core.js\";\n\n" +
 						"jQuery.noConflict = function() {};" );
 				excluded.splice( index, 1 );
-			}
-
-			// Set a desired AMD name.
-			let amdName = grunt.option( "amd" );
-			if ( amdName != null ) {
-				if ( amdName ) {
-					grunt.log.writeln( "Naming jQuery with AMD name: " + amdName );
-				} else {
-					grunt.log.writeln( "AMD name now anonymous" );
-				}
-
-				// Remove the comma for anonymous defines
-				setOverride( `${ srcFolder }/exports/amd.js`,
-					read( "exports/amd.js" )
-						.replace( /(\s*)"jquery"(\,\s*)/,
-							amdName ? "$1\"" + amdName + "\"$2" : "" ) );
 			}
 
 			grunt.verbose.writeflags( excluded, "Excluded" );

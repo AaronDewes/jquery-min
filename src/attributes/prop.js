@@ -1,6 +1,5 @@
 import jQuery from "../core.js";
 import access from "../core/access.js";
-import isIE from "../var/isIE.js";
 
 import "../selector.js";
 
@@ -87,39 +86,6 @@ jQuery.extend( {
 		"class": "className"
 	}
 } );
-
-// Support: IE <=11+
-// Accessing the selectedIndex property forces the browser to respect
-// setting selected on the option. The getter ensures a default option
-// is selected when in an optgroup. ESLint rule "no-unused-expressions"
-// is disabled for this code since it considers such accessions noop.
-if ( isIE ) {
-	jQuery.propHooks.selected = {
-		get: function( elem ) {
-
-			var parent = elem.parentNode;
-			if ( parent && parent.parentNode ) {
-				// eslint-disable-next-line no-unused-expressions
-				parent.parentNode.selectedIndex;
-			}
-			return null;
-		},
-		set: function( elem ) {
-
-
-			var parent = elem.parentNode;
-			if ( parent ) {
-				// eslint-disable-next-line no-unused-expressions
-				parent.selectedIndex;
-
-				if ( parent.parentNode ) {
-					// eslint-disable-next-line no-unused-expressions
-					parent.parentNode.selectedIndex;
-				}
-			}
-		}
-	};
-}
 
 jQuery.each( [
 	"tabIndex",

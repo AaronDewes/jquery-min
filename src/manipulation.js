@@ -1,7 +1,6 @@
 import jQuery from "./core.js";
 import isAttached from "./core/isAttached.js";
 import flat from "./var/flat.js";
-import isIE from "./var/isIE.js";
 import push from "./var/push.js";
 import access from "./core/access.js";
 import rtagName from "./manipulation/var/rtagName.js";
@@ -200,26 +199,6 @@ jQuery.extend( {
 		var i, l, srcElements, destElements,
 			clone = elem.cloneNode( true ),
 			inPage = isAttached( elem );
-
-		// Fix IE cloning issues
-		if ( isIE && ( elem.nodeType === 1 || elem.nodeType === 11 ) &&
-				!jQuery.isXMLDoc( elem ) ) {
-
-			// We eschew jQuery#find here for performance reasons:
-			// https://jsperf.com/getall-vs-sizzle/2
-			destElements = getAll( clone );
-			srcElements = getAll( elem );
-
-			for ( i = 0, l = srcElements.length; i < l; i++ ) {
-
-				// Support: IE <=11+
-				// IE fails to set the defaultValue to the correct value when
-				// cloning textareas.
-				if ( nodeName( destElements[ i ], "textarea" ) ) {
-					destElements[ i ].defaultValue = srcElements[ i ].defaultValue;
-				}
-			}
-		}
 
 		// Copy the events from the original to the clone
 		if ( dataAndEvents ) {

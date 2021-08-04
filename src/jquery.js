@@ -30,8 +30,6 @@ import "./effects.js";
 import "./effects/animatedSelector.js";
 import "./offset.js";
 import "./dimensions.js";
-import "./deprecated.js";
-import "./exports/amd.js";
 import "./exports/global.js";
 
 export default jQuery;

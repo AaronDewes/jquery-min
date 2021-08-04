@@ -1786,30 +1786,6 @@ QUnit.testUnlessIE( "html(script type module)", function( assert ) {
 	}, 1000 );
 } );
 
-QUnit.test( "html(script nomodule)", function( assert ) {
-
-	// `nomodule` scripts should be executed by legacy browsers only.
-	assert.expect( QUnit.isIE ? 4 : 0 );
-	var done = assert.async(),
-		$fixture = jQuery( "#qunit-fixture" );
-
-	$fixture.html(
-		[
-			"<script nomodule>QUnit.assert.ok( QUnit.isIE, 'evaluated: nomodule script' );</script>",
-			"<script nomodule src='" + url( "nomodule.js" ) + "'></script>",
-			"<div>",
-				"<script nomodule>QUnit.assert.ok( QUnit.isIE, 'evaluated: inner nomodule script' );</script>",
-				"<script nomodule src='" + url( "inner_nomodule.js" ) + "'></script>",
-			"</div>"
-		].join( "" )
-	);
-
-	// Allow asynchronous script execution to generate assertions
-	setTimeout( function() {
-		done();
-	}, 1000 );
-} );
-
 QUnit.test( "html(Function) with incoming value -- direct selection", function( assert ) {
 
 	assert.expect( 4 );
